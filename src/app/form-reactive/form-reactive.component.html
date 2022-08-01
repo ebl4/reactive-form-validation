@@ -1,0 +1,52 @@
+<div class="container">
+
+    <h2>Reactive Form</h2>
+
+    <form [formGroup]="residenciaForm" #formDir="ngForm">
+        
+        <div [hidden]="formDir.submitted">
+            
+            <div class="formGroup">
+                <label for="nome">Nome</label>
+                <input type="text" id="nome" class="form-control"
+                        formControlName="nome" required>
+
+                <div *ngIf="nome.invalid && (nome.dirty || nome.touched)"
+                    class="alert alert-danger">
+                    
+                    <div *ngIf="nome.errors?.['required']">
+                        Nome é obrigatório
+                    </div>
+
+                    <div *ngIf="nome.errors?.['minlength']">
+                        Nome deve ter pelo menos 4 caracteres
+                    </div>
+                </div>        
+            </div>
+
+            <div class="formGroup">
+                <label for="tipo">Tipo</label>
+                <select id="tipo" class="form-control"
+                    formControlName="tipo" required>
+                    <option *ngFor="let t of tipos" value="t">{{t}}</option>
+                </select>
+
+                <div *ngIf="tipo.invalid && tipo.touched" class="alert alert-danger">
+                    <div *ngIf="tipo.errors?.['required']">Tipo é obrigatório</div>
+                </div>
+            </div>
+
+            <p>Complete o formulário para habilitar o botão Submit.</p>
+            <button type="submit"
+                    class="btn btn-default"
+                    [disabled]="residenciaForm.invalid">Submit</button>
+            <button type="button" class="btn btn-default"
+                    (click)="formDir.resetForm({})">Reset</button>
+        </div>
+    </form>
+
+    <div class="submitted-message" *ngIf="formDir.submitted">
+        <p>Você enviou sua residência, {{ residenciaForm.value.nome }}</p>
+        <button type="button" (click)="formDir.resetForm({})">Nova residência</button>
+    </div>
+</div>
